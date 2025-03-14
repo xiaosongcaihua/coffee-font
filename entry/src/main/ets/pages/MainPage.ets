@@ -8,7 +8,7 @@ struct MainPage {
       () => {
         router.pushUrl(
           {
-            url: 'pages/LogIn'
+            url: 'pages/Login'
           },
           router.RouterMode.Single,
           err => {
@@ -24,9 +24,10 @@ struct MainPage {
 
   build() {
     Column(){
-      Image($r('app.media.pic_19'))
+      Image($r('app.media.p1'))
         .sharedTransition(`log_image`, { duration: 800, curve: Curve.Linear, delay: 100 })
-        .width(270)
+        .width(150)
+        .height(150)
     }
     .justifyContent(FlexAlign.Center)
     .width('100%')

@@ -6,9 +6,9 @@ import { User } from '../pojo/User'
 export  struct Dialog {
   controller: CustomDialogController
 
-  message!: string
-  onYes!: () => void
-  onNo!: () => void
+  message: string = ""
+  onYes: () => void = () => {}
+  onNo: () => void = () => {}
 
   build() {
     Column({space: 20}){

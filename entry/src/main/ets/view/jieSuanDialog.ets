@@ -31,9 +31,9 @@ export  struct jieSuanDialog {
       Text('请扫描以下二维码进行支付:')
         .width('100%')
         .textAlign(TextAlign.Start)
-      // Image($r('app.media.shouKuan'))
-      //   .margin(20)
-      //   .width('70%')
+      Image($r('app.media.shoukuan'))
+        .margin(20)
+        .width('70%')
       Row(){
         Button('完成支付')
           .backgroundColor('#d6b98d')

@@ -1,11 +1,11 @@
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 // import dataCtrl from '../dataModel/DataCtrl'
-import { Header } from '../pages/Header'
+import { Header } from '../view/Header'
 import { User } from '../pojo/User'
-
-@Entry
+import { url } from '@kit.ArkTS'
 @Component
+@Entry
 struct Index {
 
   @State Uno: string = ''
@@ -68,6 +68,17 @@ struct LogInModel {
       // 登录注册按钮
       Button('登录',{type: ButtonType.Normal})
         .onClick(async () => {
+          router.pushUrl(
+            {
+              url: 'pages/HomePage_order'
+            },
+            router.RouterMode.Single,
+            err => {
+              if(err){
+                console.log('注册页面跳转失败')
+              }
+            }
+          )
           // if(await dataCtrl.selectUser(this.Uno,this.Upassword)) {
           //   // 密码正确后将用户数据填入
           //   User.Uno = this.Uno
@@ -132,7 +143,7 @@ struct LogInModel {
 struct LogoModel {
   build() {
     Row(){
-      Image($r('app.media.pic_19'))
+      Image($r('app.media.p1'))
         .sharedTransition(`log_image`, { duration: 800, curve: Curve.Linear, delay: 100 })
         .height('100%')
     }

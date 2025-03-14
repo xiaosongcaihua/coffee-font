@@ -1,8 +1,7 @@
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
-import { Header } from '../pages/Header'
+import { Header } from '../view/Header'
 // import dataCtrl from '../dataModel/DataCtrl'
-
 @Entry
 @Component
 struct SignUp {
@@ -35,8 +34,9 @@ struct SignUp {
 struct TouXiangModel {
   build() {
     Row(){
-      Image($r("app.media.pic_19"))
-        .height('100%')
+      Image($r("app.media.p2"))
+        .height('110%')
+        .width('30%')
     }
     .width('100%')
     .height('100')
