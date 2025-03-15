@@ -1,9 +1,9 @@
 import promptAction from '@ohos.promptAction'
-// import dataCtrl from '../dataModel/DataCtrl'
+// import dataCtrl from '../dat/aModel/DataCtrl'
 import { Dialog } from '../view/Dialog'
-import { jieSuanDialog } from '../view/jieSuanDialog'
-import { Tea } from '../pojo/Tea'
-import { User } from '../pojo/User'
+import { jieSuanDialog } from '../view/JieSuanDialog'
+import { Tea } from '../viewModel/Tea'
+import { User } from '../viewModel/User'
 
 @Component
 export struct HomePage_BuyCar {
@@ -20,7 +20,7 @@ export struct HomePage_BuyCar {
   // 总费用
   @Consume sumF: number
   // 计算总费用方法
-  jisuanSumF: () => void = ()=> {}
+  jisuanSumF: () => void = ()=>{}
 
   build() {
     Column(){
@@ -81,7 +81,7 @@ struct showTea {
 
   @ObjectLink tea: Tea
   @Link teas: Tea[]
-  jisuanSumF: () => void=()=>{}
+  jisuanSumF: () => void = ()=>{}
   build() {
     Row(){
       Image(this.tea.image as Resource)
@@ -195,7 +195,7 @@ struct Ok_buy {
   @Consume sumF: number
   @Consume sumF_: number
   @Link teas: Tea[]
-  jisuanSumF: () => void=()=>{}
+  jisuanSumF: () => void = ()=>{}
   // 桌号
   @Link Btno: number
   // 人数
@@ -215,9 +215,9 @@ struct Ok_buy {
 
       this.controllerT.close()
     },
-      onNo: () => {
-        this.controllerT.close()
-      }})
+    onNo: () => {
+      this.controllerT.close()
+    }})
   })
 
   build() {
@@ -268,7 +268,7 @@ struct Ok_buy {
       .height(40)
 
       Row({space: 5}){
-        Image($r('app.media.shop'))
+        Image($r('app.media.shop_'))
           .height('100%')
         Column(){
           Text(`饮料费：￥${this.sumF}`)
@@ -316,5 +316,7 @@ struct Ok_buy {
       .width('100%')
       .height(50)
     }
+
+
   }
 }

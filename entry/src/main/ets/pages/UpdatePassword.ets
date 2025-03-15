@@ -1,14 +1,17 @@
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
-// import dataCtrl from '../dataModel/DataCtrl'
 import { Header } from '../view/Header'
-import { User } from '../pojo/User'
-// @Entry
+import { updateUserPSD, User } from '../viewModel/User'
+import { HttpUtil } from '../common/Util'
+import { url } from '@kit.ArkTS'
+import { R } from '../viewModel/R'
+
+@Entry
 @Component
 export  struct UpdatePassword {
 
-  oldPassword: string = ""
-  newPassword: string = ""
+  oldPassword: string=""
+  newPassword: string=""
 
   build() {
     Column(){
@@ -54,37 +57,38 @@ export  struct UpdatePassword {
 
         Blank()
         Button('确定')
-          .onClick(async () => {
+          .onClick(() => {
             if(this.oldPassword == User.Upassword){
-              if(this.newPassword != '' && this.newPassword != undefined){
-                // await dataCtrl.updataPassword(User.Uno,this.newPassword)
-
-                router.clear()
-                router.replaceUrl(
-                  {
-                    url: 'pages/LogIn'
-                  },
-                  router.RouterMode.Single,
-                  err => {
-                    if(err){
-                      console.log('08808','密码修改再跳转失败')
-                    }
-                  }
-                )
-                promptAction.showToast({
-                  message: '密码修改成功,请重新登录',
-                  duration: 1500
-                })
-              }
-              else {
+              if(this.newPassword == '' || this.newPassword == undefined){
                 promptAction.showToast({
                   message: '密码不能为空',
                   duration: 1500
                 })
               }
+              else {
+                let  ulr = "user/psd";
+                let user:updateUserPSD = {Uno:User.Uno , Upassword:this.newPassword}
+                HttpUtil.post(ulr , (result:R)=>{
+                  router.replaceUrl(
+                    {
+                      url: 'pages/LogIn'
+                    },
+                    router.RouterMode.Single,
+                    err => {
+                      if(err){
+                        console.log('08808','密码修改再跳转失败')
+                      }
+                    }
+                  )
+                  this.getUIContext().getPromptAction().showToast({
+                    message: '密码修改成功,请重新登录',
+                    duration: 1500
+                  })
+                } , user)
+              }
             }
             else{
-              promptAction.showToast({
+              this.getUIContext().getPromptAction().showToast({
                 message: '旧密码错误',
                 duration: 1500
               })

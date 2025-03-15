@@ -1,7 +1,10 @@
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 import { Header } from '../view/Header'
-// import dataCtrl from '../dataModel/DataCtrl'
+import { HttpUtil} from '../common/Util'
+import { R } from '../viewModel/R'
+import { SelectUserByUno, UserRegister } from '../viewModel/User'
+
 @Entry
 @Component
 struct SignUp {
@@ -34,9 +37,8 @@ struct SignUp {
 struct TouXiangModel {
   build() {
     Row(){
-      Image($r("app.media.p2"))
-        .height('110%')
-        .width('30%')
+      Image($r("app.media.tou_xiang"))
+        .height('100%')
     }
     .width('100%')
     .height('100')
@@ -88,39 +90,65 @@ struct InputModel {
 
       Row(){
         Button('注册')
-          .onClick(async () => {
-            if(this.reUpassword != this.Upassword){
-              promptAction.showToast({
-                message: '密码输入不一致！',
-                duration: 1500
-              })
-            }
-            else if(this.Uno == '' || this.Uname == '' || this.Upassword == ''){
-              promptAction.showToast({
-                message: '信息不可为空！',
-                duration: 1500
-              })
-            }
-            // else if(!await dataCtrl.selectUser_(this.Uno)){
-            //   promptAction.showToast({
-            //     message: '此账号已存在，请修改！',
-            //     duration: 1500
-            //   })
-            // }
-            else if(this.Uno.length > 15 || this.Upassword.length > 15){
-              promptAction.showToast({
-                message: '账号或密码不可大于15位，请修改！',
-                duration: 1500
-              })
-            }
-            // else {
-            //   dataCtrl.insertUser(this.Uno,this.Upassword,this.Uname)
-            //   promptAction.showToast({
-            //     message: '注册成功！',
-            //     duration: 1500
-            //   })
-            //   router.back()
-            // }
+          .onClick(() => {
+            let selectUserURL = "user/info";
+            let insertUserURL = "user/register";
+            let userSelect:SelectUserByUno = {Uno:this.Uno}
+            HttpUtil.post(selectUserURL , (result:R)=>{
+              if(result.data != null) {
+                this.getUIContext().getPromptAction().showToast({
+                  message: '此账号已存在，请修改！',
+                  duration: 1500
+                })
+              } else {
+                if(this.reUpassword != this.Upassword){
+                  this.getUIContext().getPromptAction().showToast({
+                    message: '密码输入不一致！',
+                    duration: 1500
+                  })
+                }
+                else if(this.Uno == '' || this.Uname == '' || this.Upassword == '') {
+                  this.getUIContext().getPromptAction().showToast({
+                    message: '信息不可为空！',
+                    duration: 1500
+                  })
+                }
+                else if(this.Uno.length > 15 || this.Upassword.length > 15){
+                  this.getUIContext().getPromptAction().showToast({
+                    message: '账号或密码不可大于15位，请修改！',
+                    duration: 1500
+                  })
+                }
+                let user:UserRegister = {Uno:this.Uno , Uname:this.Uname , Upassword:this.Upassword}
+                HttpUtil.post(insertUserURL ,(result:R)=>{
+                  if (result.code == 200) {
+                    this.getUIContext().getPromptAction().showToast({
+                      message: '注册成功！',
+                      duration: 1500
+                    })
+                    router.replaceUrl(
+                      {
+                        url: 'pages/LogIn',
+                      },
+                      router.RouterMode.Single,
+                      err => {
+                        if (err) {
+                          console.log('testLog', '主页面跳转错误')
+                        }
+                      }
+                    )
+                  } else {
+                    this.getUIContext().getPromptAction().showToast({
+                      message: '服务端异常注册失败！',
+                      duration: 1500
+                    })
+                  }
+                } , user)
+              }
+            } , userSelect)
+
+
+
           })
           .width(100)
           .backgroundColor('#c49a81')

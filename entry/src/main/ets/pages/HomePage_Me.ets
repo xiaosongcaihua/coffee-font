@@ -1,9 +1,8 @@
 import router from '@ohos.router'
 import { Dialog } from '../view/Dialog'
-import { User } from '../pojo/User'
+import { User } from '../viewModel/User'
 // @Preview
 @Component
-@Entry
 export struct HomePage_Me {
 
   controllerLogOut: CustomDialogController = new CustomDialogController({
@@ -33,8 +32,7 @@ export struct HomePage_Me {
 
   build() {
     Column(){
-      // Image($r('app.media.tou_xiang'))
-      Image($r('app.media.icon'))
+      Image($r('app.media.tou_xiang'))
         .width('30%')
       Text('UserName: ' + User.Uname)
         .fontSize(20)

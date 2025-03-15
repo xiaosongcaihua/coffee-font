@@ -2,24 +2,36 @@ import router from '@ohos.router'
 import systemDateTime from '@ohos.systemDateTime'
 import promptAction from '@ohos.promptAction'
 // import dataCtrl from '../dataModel/DataCtrl'
-import { Tea } from '../pojo/Tea'
-import { User } from '../pojo/User'
+import { Tea } from '../viewModel/Tea'
+import { User } from '../viewModel/User'
 import { HomePage_BuyCar } from './HomePage_BuyCar'
 import { Header } from '../view/Header'
-interface Norms  {
-  cup: number;
-  temp: number;
-  sweetness: number;
+import { HttpUtil } from '../common/Util'
+import { R } from '../viewModel/R'
+import { buycar } from '../viewModel/buycar'
+
+interface NormsType {
+  cup: number,
+  temp: number,
+  sweetness: number
 }
-// @Entry
+interface Params {
+  tea: Tea;
+}
+
+
+@Entry
 @Component
 struct SelectSpecifications {
-  // tea: Tea = router.getParams()['tea']
-  tea: Tea = router.getParams() as Tea
+
+
+tea:Tea = (router.getParams() as Params).tea
+
   @State sum: number = 1
 
+
 // 规格
-  @State norms: Norms = {
+  @State norms: NormsType = {
     cup: 0,
     temp: 0,
     sweetness: 0
@@ -76,7 +88,7 @@ struct SelectSpecifications {
                 else{
                   // 获取当前时间
                   systemDateTime.getDate(async (err,data) => {
-                    if(err){
+                    if(err.message != ""){
                       console.log('08808','获取当前时间错误！')
                       return
                     }
@@ -90,13 +102,25 @@ struct SelectSpecifications {
                     // 组装时间
                     let Ctime: string = `${nowYear}年${nowMonth}月${nowDay}日 ${nowHour}:${nowMi}:${nowSec}`
                     // 插入购物车数据库
-                    // await dataCtrl.insertBuy_car(Ctime,User.Uno,this.tea.name,this.sum,this.norms['cup'],this.norms['temp'],this.norms['sweetness'],this.tea.no)
+                    let url = "buycar/insert"
+                    let buycar:buycar = {ctime:Ctime,Uno:User.Uno,Tname:this.tea.name,Csum:this.sum,
+                      Ccup:this.norms.cup,Ctemp:this.norms.temp,Csweetness:this.norms.sweetness,Ctno:this.tea.no}
+                    HttpUtil.post(url , (result:R)=>{
+                      if (result.code == 200) {
+                        this.getUIContext().getPromptAction().showToast({
+                          message: '添加成功！',
+                          duration: 1500
+                        })
+                        router.back()
+                      } else {
+                        this.getUIContext().getPromptAction().showToast({
+                          message: '服务端异常、添加失败！',
+                          duration: 1500
+                        })
+                      }
+                    } , buycar)
 
-                    promptAction.showToast({
-                      message: '添加成功！',
-                      duration: 1500
-                    })
-                    router.back()
+
                   })
                 }
               })
@@ -136,15 +160,22 @@ struct SelectSpecifications {
 
   // 按钮点击触发函数
   buttonClick(type: string,index: number){
-    // this.norms[type] = index
+    if (type == "cup") {
+      this.norms.cup = index
+    } else if (type == "temp"){
+      this.norms.temp = index
+    } else {
+      this.norms.sweetness = index
+    }
   }
+
 }
 
 // 规格选择模块
 @Component
 struct SelectModel {
   // 从父组件传进来的按钮点击事件
-  @Prop buttonClick: (type: string,index: number) => void
+  buttonClick: (type: string,index: number) => void = ()=>{}
 
   @Link norms: object
   build() {
@@ -254,6 +285,7 @@ struct SelectModel {
       .justifyContent(FlexAlign.SpaceBetween)
       .margin({top: 5,bottom: 3})
       .padding({bottom: 5})
+
     }
   }
 }

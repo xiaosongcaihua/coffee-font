@@ -1,14 +1,15 @@
 import systemDateTime from '@ohos.systemDateTime'
-import { Tea } from '../pojo/Tea'
-import { User } from '../pojo/User'
+// import dataCtrl from '../dataModel/DataCtrl'
+import { Tea } from '../viewModel/Tea'
+import { User } from '../viewModel/User'
 @CustomDialog
 @Preview
 export  struct Dialog {
   controller: CustomDialogController
 
   message: string = ""
-  onYes: () => void = () => {}
-  onNo: () => void = () => {}
+  onYes: () => void = ()=>{}
+  onNo: () => void = ()=>{}
 
   build() {
     Column({space: 20}){

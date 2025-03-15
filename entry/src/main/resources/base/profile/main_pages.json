@@ -1,9 +1,10 @@
 {
   "src": [
-    "pages/MainPage",
-    "pages/Login",
+    "pages/LogIn",
     "pages/SignUp",
-    "pages/HomePage_Me",
-    "pages/HomePage_order"
+    "pages/HomePage",
+    "pages/SelectSpecifications",
+    "pages/UpdatePassword",
+    "pages/MainPage"
   ]
 }
