@@ -1,7 +1,7 @@
 
 // import dataCtrl from '../dataModel/DataCtrl'
 import { Dialog } from '../view/Dialog'
-import { Bill } from '../viewModel/Bill'
+import { Bill, BillInfo } from '../viewModel/Bill'
 @Component
 export  struct HomePage_Bill {
 
@@ -41,19 +41,19 @@ export  struct HomePage_Bill {
         ForEach(this.bills,(bill: Bill,index) => {
           ListItem(){
             Column({space: 5}){
-              Text(`订单编号：${bill.Bno}`)
+              Text(`订单编号：${bill.bno}`)
                 .width('100%')
                 .fontSize(17)
                 .fontWeight(FontWeight.Bold)
-              Text(bill.Btime)
+              Text(bill.btime)
                 .width('100%')
               .fontSize(Color.Gray)
               Row(){
-                Text(bill.Btype)
+                Text(bill.btype)
                   .fontSize(17)
                   .fontWeight(FontWeight.Bold)
                 Blank()
-                Text(`总价：￥${bill.Bprice}`)
+                Text(`总价：￥${bill.bprice}`)
                   .fontSize(17)
                   .fontWeight(FontWeight.Bold)
               }
@@ -87,7 +87,7 @@ export  struct HomePage_Bill {
               .height(50)
             Text('ABC')
               .margin({bottom: 10})
-            Text(`-${this.bill.Bprice}`)
+            Text(`-${this.bill.bprice}`)
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
           }
@@ -131,7 +131,7 @@ export  struct HomePage_Bill {
             Column({space: 5}){
               Text('支付成功')
                 .text2Styles()
-              Text(this.bill.Btime)
+              Text(this.bill.btime)
                 .text2Styles()
               Text('松达的茶-消费')
                 .text2Styles()
@@ -141,15 +141,15 @@ export  struct HomePage_Bill {
                 .text2Styles()
               Text('零钱')
                 .text2Styles()
-              Text(this.bill.Bno)
+              Text(this.bill.bno)
                 .text2Styles()
               Text('可在支持的商户扫码退款')
                 .text2Styles()
-              Text(this.bill.Btype)
+              Text(this.bill.btype)
                 .text2Styles()
-              Text(this.bill.Bdno.toString())
+              Text(this.bill.bdno.toString())
                 .text2Styles()
-              Text(this.bill.Bsum.toString())
+              Text(this.bill.bsum.toString())
                 .text2Styles()
             }
             .height('100%')

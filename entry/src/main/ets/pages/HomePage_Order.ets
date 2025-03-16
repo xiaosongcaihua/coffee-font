@@ -33,6 +33,7 @@ export  struct HomePage_Order {
         23,
         // 类别
         1,
+        undefined,
         // 数量
         undefined,
         // 备注
@@ -52,6 +53,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'xyhgc',
         1
       ),
@@ -61,6 +63,7 @@ export  struct HomePage_Order {
         '当季新鲜荔枝果肉·定制生椰乳·每日现制西米，椰椰荔香清甜交融',
         19,
         1,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -76,6 +79,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'snrfdmy',
         3
       ),
@@ -85,6 +89,7 @@ export  struct HomePage_Order {
         '优选广西牧场水牛乳·水牛乳冻·慢数黑糖波波，口感甜腻不喜慎点',
         19,
         2,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -100,6 +105,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'qbbnrc',
         5
       ),
@@ -109,6 +115,7 @@ export  struct HomePage_Order {
         '芋泥系列大满贯版，5重口感，浓浓芋香，轻盈不腻',
         18,
         2,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -124,6 +131,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'khtbbnrc',
         7
       ),
@@ -133,6 +141,7 @@ export  struct HomePage_Order {
         '当季三华李与当季黄油桃，脆、鲜、甜层层递进',
         15,
         3,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -148,6 +157,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'zzdrtt',
         9
       ),
@@ -157,6 +167,7 @@ export  struct HomePage_Order {
         '优选阳光玫瑰青提·鲜果颗颗去皮·无奶精芝士，甜脆香郁。',
         28,
         3,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -172,6 +183,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'zzmm',
         11
       ),
@@ -181,6 +193,7 @@ export  struct HomePage_Order {
         '暴打新鲜柠檬·甄选无香精鸭屎香单从茶，超大桶的清爽更解腻',
         18,
         4,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -196,6 +209,7 @@ export  struct HomePage_Order {
         undefined,
         undefined,
         undefined,
+        undefined,
         'zzmy',
         13
       ),
@@ -205,6 +219,7 @@ export  struct HomePage_Order {
         '甄选茶园定制绿妍茶底，淡雅芳幽，默认不加糖，0糖0卡轻负担',
         8,
         4,
+        undefined,
         undefined,
         undefined,
         undefined,

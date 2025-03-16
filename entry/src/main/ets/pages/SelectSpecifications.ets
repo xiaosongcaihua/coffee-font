@@ -103,15 +103,25 @@ tea:Tea = (router.getParams() as Params).tea
                     let Ctime: string = `${nowYear}年${nowMonth}月${nowDay}日 ${nowHour}:${nowMi}:${nowSec}`
                     // 插入购物车数据库
                     let url = "buycar/insert"
-                    let buycar:buycar = {ctime:Ctime,Uno:User.Uno,Tname:this.tea.name,Csum:this.sum,
-                      Ccup:this.norms.cup,Ctemp:this.norms.temp,Csweetness:this.norms.sweetness,Ctno:this.tea.no}
+                    let buycar:buycar = {ctime:Ctime,uno:User.Uno,tname:this.tea.name,csum:this.sum,
+                      ccup:this.norms.cup,ctemp:this.norms.temp,csweetness:this.norms.sweetness,ctno:this.tea.no}
                     HttpUtil.post(url , (result:R)=>{
                       if (result.code == 200) {
+                        router.replaceUrl(
+                          {
+                            url: 'view/OrderModel'
+                          },
+                          router.RouterMode.Single,
+                          err => {
+                            if(err){
+                              console.log('08808','订单跳转失败')
+                            }
+                          }
+                        )
                         this.getUIContext().getPromptAction().showToast({
                           message: '添加成功！',
                           duration: 1500
                         })
-                        router.back()
                       } else {
                         this.getUIContext().getPromptAction().showToast({
                           message: '服务端异常、添加失败！',

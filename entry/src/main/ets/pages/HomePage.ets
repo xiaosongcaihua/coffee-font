@@ -1,13 +1,19 @@
 import router from '@ohos.router'
+import { HttpUtil } from '../common/Util'
 import { Header } from '../view/Header'
 import { Bill } from '../viewModel/Bill'
+import { buycar, BuycarKey } from '../viewModel/buycar'
+import { R } from '../viewModel/R'
 import { StaticValue } from '../viewModel/StaticValue'
-import { Tea } from '../viewModel/Tea'
-import { User } from '../viewModel/User'
+import { Norms, Tea } from '../viewModel/Tea'
+import { SelectUserByUno, User } from '../viewModel/User'
 import { HomePage_Bill } from './HomePage_Bill'
 import { HomePage_BuyCar } from './HomePage_BuyCar'
 import { HomePage_Me } from './HomePage_Me'
 import { HomePage_Order } from './HomePage_Order'
+import { TestRunner } from '@kit.TestKit'
+import { http } from '@kit.NetworkKit'
+
 @Entry
 @Component
 struct HomePage {
@@ -15,6 +21,8 @@ struct HomePage {
   @State currentIndex: number = 1
   // 购物车数据
   @State buyCarTeas: Tea[] = []
+  // 数据库购物车数据
+  @State buycars :buycar[] = []
   // 购物车饮品总价格
   @Provide sumF: number = 0
   // 购物车服务费
@@ -49,15 +57,50 @@ struct HomePage {
       }
       .layoutWeight(1)
       .animationDuration(100)
-      .onChange(async (index:number) => {
+      .onChange((index:number) => {
         this.currentIndex = index + 1
         if(this.currentIndex == 2){
-          await this.initTeas()
-          this.jisuanSumF()
-          console.log('08808','当前是第二个页面，进行了数组初始化，进行了数据校验')
+          let buycar:BuycarKey = {ctime:"" , uno:User.Uno}
+          HttpUtil.post("buycar/all" , (result:R)=>{
+            this.buycars = result.data as buycar[]
+            console.log('08808','购物车数据读取成功！')
+            //初始化buycarTea
+            this.buyCarTeas = []
+            for (let buycar of this.buycars) {
+              let norms: Norms = {
+                cup: buycar.ccup,
+                temp: buycar.ctemp,
+                sweetness: buycar.csweetness
+              }
+              let Ctno = buycar.ctno
+              let tea: Tea = new Tea(
+                // 饮品名称
+                buycar.tname,
+                // 饮品图片地址
+                StaticValue.teas[Ctno].image,
+                // 饮品简介
+                StaticValue.teas[Ctno].about,
+                // 饮品总价 数量*单价
+                StaticValue.teas[Ctno].price * buycar.csum,
+                // 饮品类型
+                StaticValue.teas[Ctno].type,
+                //time
+                buycar.ctime,
+                // 饮品数量
+                buycar.csum,
+                // 客户备注 暂且不用
+                '',
+                // 饮品规格
+                norms
+              )
+              this.buyCarTeas.push(tea)
+            }
+            this.jisuanSumF()
+            console.log('08808','当前是第二个页面，进行了数组初始化，进行了数据校验')
+          } , buycar)
         }
         if(this.currentIndex == 3){
-          await this.initBills()
+          this.initBills()
         }
       })
     }
@@ -100,14 +143,20 @@ struct HomePage {
 
 
   // 读取购物车数据，初始化饮品数组
-  async initTeas(){
-    // this.buyCarTeas = await dataCtrl.readBuy_car()
-    console.log('08808','购物车数据读取成功！')
+  initTeas(){
+    let buycar:BuycarKey = {ctime:"" , uno:User.Uno}
+    HttpUtil.post("buycar/all" , (result:R)=>{
+      this.buyCarTeas = result.data as Tea[]
+      console.log('08808','购物车数据读取成功！')
+    } , buycar)
   }
 
   // 读订单数据，初始化订单数组
-  async initBills(){
-    // this.bills = await dataCtrl.readBought()
+  initBills(){
+    let bougutlistQuery:SelectUserByUno = {Uno:User.Uno}
+    HttpUtil.post("bought/all" , (result:R)=>{
+      this.bills = result.data as Bill[]
+    } , bougutlistQuery)
     console.log('08808','订单数据读取成功！')
   }
 }

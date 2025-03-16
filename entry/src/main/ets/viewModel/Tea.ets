@@ -29,12 +29,16 @@ export class Tea {
 
 
 
-  constructor(name: string,image: resourceManager.Resource,about: string,price: number,type: number,sum?: number,notes?: string,norms?: Norms,firstI?: string,no?: number) {
+  constructor(name: string,image: resourceManager.Resource,about: string,price: number,type: number,ctime?:string,sum?: number,notes?: string,norms?: Norms,firstI?: string,no?: number) {
     this.name = name
     this.image = image
     this.about = about
     this.price = price
     this.type = type
+    if (ctime != undefined){
+      this.Ctime = ctime
+    }
+
 
     if(sum){
       this.sum = sum
@@ -54,7 +58,7 @@ export class Tea {
   }
 
 }
-interface Norms {
+export interface Norms {
   cup: number,
   temp: number,
   sweetness: number

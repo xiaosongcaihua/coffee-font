@@ -80,7 +80,7 @@ struct LogInModel {
               let user = result.data as UserLoginRes
               User.Uno = this.Uno
               User.Upassword = this.Upassword
-              User.Uname = user.Uname
+              User.Uname = user.uname
               router.replaceUrl(
                 {
                   url: 'pages/HomePage',

@@ -1,8 +1,10 @@
 import promptAction from '@ohos.promptAction'
-// import dataCtrl from '../dat/aModel/DataCtrl'
+import { HttpUtil } from '../common/Util'
 import { Dialog } from '../view/Dialog'
 import { jieSuanDialog } from '../view/JieSuanDialog'
+import { R } from '../viewModel/R'
 import { Tea } from '../viewModel/Tea'
+import { BuycarKey,BuycarUpdateSum } from '../viewModel/buycar'
 import { User } from '../viewModel/User'
 
 @Component
@@ -66,12 +68,14 @@ struct showTea {
       message: '确定要从购物车移除此项饮品吗？',
       onYes: () => {
         // 先从数据库中删除，再从列表中删除
-        // dataCtrl.deleteBuyCarTo(this.tea.Ctime,User.Uno)
-        let index = this.teas.indexOf(this.tea)
-        this.teas.splice(index,1)
-        this.jisuanSumF()
-
-        this.controllerTo.close()
+        let url = "buycar/delete"
+        let butcarDel:BuycarKey = {ctime:this.tea.Ctime ,uno:User.Uno}
+        HttpUtil.post(url , (result:R)=>{
+          let index = this.teas.indexOf(this.tea)
+          this.teas.splice(index,1)
+          this.jisuanSumF()
+          this.controllerTo.close()
+        } , butcarDel)
       },
       onNo: () => {
         this.controllerTo.close()
@@ -161,7 +165,8 @@ struct showTea {
             this.tea.price += this.tea.price / this.tea.sum
             this.tea.sum++
             this.jisuanSumF()
-            // await dataCtrl.updateBuyCar(User.Uno,this.tea.Ctime,this.tea.sum)
+            let buycar:BuycarUpdateSum = {ctime:this.tea.Ctime , uno:User.Uno ,csum:this.tea.sum}
+            HttpUtil.post("buycar/update" , (result:R)=>{} , buycar)
           })
           .onDec(async () => {
             // 只有大于1时才可以减
@@ -170,7 +175,8 @@ struct showTea {
               this.tea.price -= this.tea.price / this.tea.sum
               this.tea.sum--
               this.jisuanSumF()
-              // await dataCtrl.updateBuyCar(User.Uno,this.tea.Ctime,this.tea.sum)
+              let buycar:BuycarUpdateSum = {ctime:this.tea.Ctime , uno:User.Uno ,csum:this.tea.sum}
+              HttpUtil.post("buycar/update" , (result:R)=>{} , buycar)
             }
             else if (this.tea.sum == 1){
               this.controllerTo.open()
@@ -210,9 +216,12 @@ struct Ok_buy {
   controllerT: CustomDialogController = new CustomDialogController({
     builder: Dialog({message: '确定要清空购物车吗？',onYes: () => {
       this.teas = []
-      // dataCtrl.deleteBuyCar()
+      let url = "buycar/delete"
+      let butcarDel:BuycarKey = {ctime:"",uno:User.Uno}
+      HttpUtil.post(url , (result:R)=>{
+        console.log((String)(result.data))
+      } , butcarDel)
       this.jisuanSumF()
-
       this.controllerT.close()
     },
     onNo: () => {

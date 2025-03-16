@@ -9,9 +9,9 @@ export interface UserLogin{
   Upassword: string
 }
 export interface UserLoginRes{
-  Uno: string
-  Upassword: string
-  Uname: string
+  uno: string
+  upassword: string
+  uname: string
 }
 export interface UserRegister{
   Uno: string
